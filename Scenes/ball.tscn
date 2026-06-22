@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dqsq5sr0lyl4y"]
+
+[ext_resource type="Texture2D" uid="uid://bumh5if4xovdf" path="res://icon.svg" id="1_d60mj"]
+[ext_resource type="Script" uid="uid://deofknv64pkhm" path="res://Scripts/ball.gd" id="1_ij5cq"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ij5cq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mkdus"]
+radius = 1.4142135
+
+[sub_resource type="Animation" id="Animation_376qj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_ij5cq"]
+resource_name = "die"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 6, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_376qj"]
+_data = {
+&"RESET": SubResource("Animation_376qj"),
+&"die": SubResource("Animation_ij5cq")
+}
+
+[node name="Ball" type="RigidBody2D" unique_id=1473761784]
+collision_layer = 4
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_ij5cq")
+gravity_scale = 0.5
+constant_torque = 1.0
+script = ExtResource("1_ij5cq")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=892546001]
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("1_d60mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2074089296]
+shape = SubResource("CircleShape2D_mkdus")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=639788583]
+libraries/ = SubResource("AnimationLibrary_376qj")
+
+[node name="AutoDestruction" type="Timer" parent="." unique_id=1893345441]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="timeout" from="AutoDestruction" to="." method="_on_auto_destruction_timeout"]

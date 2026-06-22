@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://crpo8wab8p247"]
+
+[ext_resource type="Script" uid="uid://w8pg6hv2a4xs" path="res://Scripts/roulette.gd" id="1_7m0ys"]
+[ext_resource type="Texture2D" uid="uid://0776oqofrknm" path="res://Sprites/casino.png" id="1_mkdus"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d7bgo"]
+radius = 34.0
+height = 126.0
+
+[node name="roulette" type="Area2D" unique_id=1085256479]
+collision_layer = 2
+collision_mask = 5
+gravity_point = true
+gravity_point_unit_distance = 4.0
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+script = ExtResource("1_7m0ys")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=724964499]
+texture_filter = 1
+position = Vector2(1, 1)
+texture = ExtResource("1_mkdus")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2047263934]
+visible = false
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_d7bgo")
+
+[node name="Timer" type="Timer" parent="." unique_id=623660495]
+wait_time = 3.0
+one_shot = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1667917948]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=705678500]
+visible = false
+polygon = PackedVector2Array(-13, -6, -18, -2, -19, 5, -13, 9, -3, 9, 8, 9, 16, 4, 19, -1, 15, -5, 10, -7, 6, -7, 2, -7, -4, -7)
+
+[node name="Holes" type="Area2D" parent="." unique_id=1028500154]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Holes" unique_id=1299064505]
+visible = false
+polygon = PackedVector2Array(-24, -12, -28, -10, -34, -5, -36, 1, -35, 8, -28, 15, -15, 18, -3, 18, 18, 17, 28, 13, 37, 7, 41, 2, 41, -5, 35, -10, 28, -12, 19, -15, 10, -16, 1, -16, -7, -16, -13, -15, -21, -13)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

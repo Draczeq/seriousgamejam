@@ -1,7 +1,91 @@
 [gd_scene format=3 uid="uid://dfn2vw2lesmwg"]
 
+[ext_resource type="Script" uid="uid://es4ft2hnfn54" path="res://Scripts/game.gd" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://b15tgnborxqam" path="res://Scenes/player.tscn" id="1_ebmjs"]
+[ext_resource type="Texture2D" uid="uid://bjrx0ayody44x" path="res://Sprites/floor.png" id="1_wrm1d"]
+[ext_resource type="PackedScene" uid="uid://crpo8wab8p247" path="res://Scenes/casino.tscn" id="3_wrm1d"]
+
+[sub_resource type="Animation" id="Animation_wrm1d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_3dryh"]
+resource_name = "start_game"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.48296803, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wowpa"]
+_data = {
+&"RESET": SubResource("Animation_wrm1d"),
+&"start_game": SubResource("Animation_3dryh")
+}
 
 [node name="Game" type="Node2D" unique_id=1104795986]
+script = ExtResource("1_3dryh")
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=1316437825]
+texture_filter = 1
+position = Vector2(160, 90)
+texture = ExtResource("1_wrm1d")
+
+[node name="roulette" parent="." unique_id=668480495 instance=ExtResource("3_wrm1d")]
+position = Vector2(156, 47)
+
+[node name="Balls" type="Node2D" parent="." unique_id=1263857715]
 
 [node name="CharacterBody2D" parent="." unique_id=475872707 instance=ExtResource("1_ebmjs")]
+position = Vector2(150, 157)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1335321988]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1982884308]
+libraries/ = SubResource("AnimationLibrary_wowpa")
+autoplay = &"start_game"
