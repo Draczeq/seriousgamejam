@@ -1,16 +1,57 @@
 [gd_scene format=3 uid="uid://b15tgnborxqam"]
 
-[ext_resource type="Script" uid="uid://bxl1tr40cm3dq" path="res://Scenes/player.gd" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://bxl1tr40cm3dq" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://bumh5if4xovdf" path="res://icon.svg" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://u7cn330wir43" path="res://Sprites/character.png" id="2_6t5aa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dkq08"]
+size = Vector2(2.6347442, 2.6347442)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=475872707]
+collision_mask = 10
 script = ExtResource("1_cvnsp")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1969205982]
+texture_filter = 1
+position = Vector2(3, 0)
+texture = ExtResource("2_6t5aa")
+
+[node name="BallPosition" type="Node2D" parent="." unique_id=812176188]
+
+[node name="BallPlaceholder" type="Sprite2D" parent="BallPosition" unique_id=1190330916]
+visible = false
+position = Vector2(10, 7)
+scale = Vector2(0.02, 0.02)
 texture = ExtResource("1_v0iea")
 
+[node name="Arrow" type="Node2D" parent="BallPosition" unique_id=229310491]
+position = Vector2(4.28, 0)
+scale = Vector2(0.02, 0.02)
+
+[node name="ColorRect" type="ColorRect" parent="BallPosition/Arrow" unique_id=1254264706]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 586.0
+offset_top = -100.0
+offset_right = 724.6156
+offset_bottom = 47.171906
+grow_vertical = 2
+offset_transform_enabled = true
+color = Color(0.31541824, 0.49256384, 0.70211834, 1)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1802524530]
+position = Vector2(-0.5, -0.5)
 scale = Vector2(6.4522395, 6.4522395)
 shape = SubResource("RectangleShape2D_dkq08")
+
+[node name="SpinningTime" type="Timer" parent="." unique_id=2062614922]
+wait_time = 3.0
+one_shot = true
+
+[node name="SpinningCooldown" type="Timer" parent="." unique_id=1256175098]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="SpinningTime" to="." method="_on_spinning_time_timeout"]
+[connection signal="timeout" from="SpinningCooldown" to="." method="_on_spinning_cooldown_timeout"]
