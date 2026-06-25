@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://thfxrp1nxd02"]
+
+[ext_resource type="Script" uid="uid://dtc8skvmy65vr" path="res://Scripts/dice.gd" id="1_7cx2c"]
+[ext_resource type="Texture2D" uid="uid://bchmtfmddosyi" path="res://Sprites/dice.png" id="2_3jar1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkq08"]
+size = Vector2(64, 64)
+
+[node name="Dice" type="Area2D" unique_id=2016461714 groups=["navigation_polygon_source_geometry_group"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_7cx2c")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=848819672]
+texture = ExtResource("2_3jar1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=466094996]
+shape = SubResource("RectangleShape2D_dkq08")
+
+[node name="StartTimer" type="Timer" parent="." unique_id=1918768082]
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

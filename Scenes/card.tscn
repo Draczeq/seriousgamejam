@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://vsj2lffte6t7"]
+
+[ext_resource type="Texture2D" uid="uid://bnjs07s4yqkm6" path="res://Sprites/card5.png" id="1_0qqmn"]
+[ext_resource type="Script" uid="uid://bos5gyo6t4bi1" path="res://Scripts/card.gd" id="1_wf8id"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caqq8"]
+size = Vector2(17, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkq08"]
+size = Vector2(23, 34)
+
+[node name="Card" type="CharacterBody2D" unique_id=719849433 groups=["enemy"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_wf8id")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=317134144]
+texture = ExtResource("1_0qqmn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1300811483]
+position = Vector2(-0.5, -4)
+shape = SubResource("RectangleShape2D_caqq8")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1783167751]
+simplify_path = true
+avoidance_enabled = true
+radius = 30.0
+debug_path_custom_color = Color(1, 0.28627452, 1, 1)
+
+[node name="TurnSideTimer" type="Timer" parent="." unique_id=783777249]
+process_callback = 0
+wait_time = 1.5
+autostart = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1136182313]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=124059140]
+position = Vector2(-0.5, -3)
+shape = SubResource("RectangleShape2D_dkq08")
+
+[node name="StartTimer" type="Timer" parent="." unique_id=572143850]
+one_shot = true
+autostart = true
+
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
+[connection signal="timeout" from="TurnSideTimer" to="." method="_on_turn_side_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

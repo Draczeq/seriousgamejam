@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://7pn3dlvwiw17"]
+
+[ext_resource type="Texture2D" uid="uid://c1gfr1njpu1nq" path="res://Sprites/claw_animation/pixil-frame-0.png" id="1_n8ajb"]
+[ext_resource type="Texture2D" uid="uid://0c70dyl3llv6" path="res://Sprites/claw_animation/pixil-frame-1.png" id="2_wiotk"]
+[ext_resource type="Texture2D" uid="uid://f1f8wq3nf0ef" path="res://Sprites/claw_animation/pixil-frame-2.png" id="3_gc1s2"]
+[ext_resource type="Texture2D" uid="uid://dlsa250ms6rxl" path="res://Sprites/claw_animation/pixil-frame-3.png" id="4_8u76l"]
+[ext_resource type="Texture2D" uid="uid://ba4in3kshpy6y" path="res://Sprites/claw_animation/pixil-frame-4.png" id="5_2qkeu"]
+[ext_resource type="Texture2D" uid="uid://d0jidnf6q02mh" path="res://Sprites/claw_animation/pixil-frame-5.png" id="6_wqbpv"]
+[ext_resource type="Texture2D" uid="uid://cnrrcoglmhpis" path="res://Sprites/claw_animation/pixil-frame-6.png" id="7_to382"]
+[ext_resource type="Texture2D" uid="uid://b2rcu4qdts7u8" path="res://Sprites/claw_animation/pixil-frame-7.png" id="8_00urk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d7bgo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_n8ajb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_wiotk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gc1s2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8u76l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2qkeu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_wqbpv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_to382")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_00urk")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 20.0
+}]
+
+[node name="PlayerAttack" type="Area2D" unique_id=358732799]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1018638387]
+position = Vector2(-3, 0)
+polygon = PackedVector2Array(-20, -12, -23, -6, -23, -2, -22, 4, -19, 9, -13, 9, -13, -12)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1761750563]
+sprite_frames = SubResource("SpriteFrames_d7bgo")
+animation = &"attack"

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://deofknv64pkhm" path="res://Scripts/ball.gd" id="1_ij5cq"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ij5cq"]
+rough = true
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mkdus"]
 radius = 1.4142135
@@ -49,12 +50,12 @@ _data = {
 collision_layer = 4
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_ij5cq")
-gravity_scale = 0.5
+gravity_scale = 0.0
 constant_torque = 1.0
 script = ExtResource("1_ij5cq")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=892546001]
-scale = Vector2(0.02, 0.02)
+scale = Vector2(0.04, 0.04)
 texture = ExtResource("1_d60mj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2074089296]
@@ -67,4 +68,14 @@ libraries/ = SubResource("AnimationLibrary_376qj")
 wait_time = 10.0
 one_shot = true
 
+[node name="FlyTimer" type="Timer" parent="." unique_id=1394273561]
+wait_time = 0.2
+one_shot = true
+
+[node name="DropTimer" type="Timer" parent="." unique_id=44764717]
+wait_time = 0.4
+one_shot = true
+
 [connection signal="timeout" from="AutoDestruction" to="." method="_on_auto_destruction_timeout"]
+[connection signal="timeout" from="FlyTimer" to="." method="_on_fly_timer_timeout"]
+[connection signal="timeout" from="DropTimer" to="." method="_on_drop_timer_timeout"]

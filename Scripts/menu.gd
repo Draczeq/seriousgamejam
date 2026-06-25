@@ -8,7 +8,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if gameStart:
-		get_tree().change_scene_to_file("res://Scenes/game.tscn")
+		get_tree().change_scene_to_file("res://Scenes/project.tscn")
 
 func _on_button_button_up() -> void:
 	$AnimationPlayer.play("start_game")

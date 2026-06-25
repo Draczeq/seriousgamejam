@@ -2,46 +2,71 @@
 
 [ext_resource type="Script" uid="uid://bxl1tr40cm3dq" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://bumh5if4xovdf" path="res://icon.svg" id="1_v0iea"]
-[ext_resource type="Texture2D" uid="uid://u7cn330wir43" path="res://Sprites/character.png" id="2_6t5aa"]
+[ext_resource type="Texture2D" uid="uid://d0xdu5w2k3bws" path="res://Sprites/cat.png" id="2_vgqql"]
+[ext_resource type="PackedScene" uid="uid://7pn3dlvwiw17" path="res://Scenes/player_attack.tscn" id="4_vgqql"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dkq08"]
-size = Vector2(2.6347442, 2.6347442)
+size = Vector2(6.548114, 4.378325)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=475872707]
+[sub_resource type="Animation" id="Animation_vgqql"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fkybt"]
+resource_name = "untouchable"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x3wgy"]
+_data = {
+&"RESET": SubResource("Animation_vgqql"),
+&"untouchable": SubResource("Animation_fkybt")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=475872707 groups=["player"]]
 collision_mask = 10
 script = ExtResource("1_cvnsp")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1969205982]
 texture_filter = 1
 position = Vector2(3, 0)
-texture = ExtResource("2_6t5aa")
+texture = ExtResource("2_vgqql")
+flip_h = true
 
 [node name="BallPosition" type="Node2D" parent="." unique_id=812176188]
 
-[node name="BallPlaceholder" type="Sprite2D" parent="BallPosition" unique_id=1190330916]
-visible = false
-position = Vector2(10, 7)
-scale = Vector2(0.02, 0.02)
-texture = ExtResource("1_v0iea")
-
 [node name="Arrow" type="Node2D" parent="BallPosition" unique_id=229310491]
 position = Vector2(4.28, 0)
-scale = Vector2(0.02, 0.02)
+scale = Vector2(0.04, 0.04)
 
-[node name="ColorRect" type="ColorRect" parent="BallPosition/Arrow" unique_id=1254264706]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 586.0
-offset_top = -100.0
-offset_right = 724.6156
-offset_bottom = 47.171906
-grow_vertical = 2
-offset_transform_enabled = true
-color = Color(0.31541824, 0.49256384, 0.70211834, 1)
+[node name="BallPlaceholder" type="Sprite2D" parent="BallPosition/Arrow" unique_id=1190330916]
+position = Vector2(786, 0)
+texture = ExtResource("1_v0iea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1802524530]
-position = Vector2(-0.5, -0.5)
+position = Vector2(0, 7.0000005)
 scale = Vector2(6.4522395, 6.4522395)
 shape = SubResource("RectangleShape2D_dkq08")
 
@@ -53,5 +78,28 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
+[node name="DamageCooldown" type="Timer" parent="." unique_id=491231994]
+wait_time = 3.0
+one_shot = true
+
+[node name="PlayerAttack" parent="." unique_id=358732799 instance=ExtResource("4_vgqql")]
+
+[node name="CollisionPolygon2D" parent="PlayerAttack" index="0" unique_id=1018638387]
+position = Vector2(-17, 2)
+polygon = PackedVector2Array(-32, -12, -35, -6, -35, -2, -34, 4, -31, 9, 9, 9, 9, -12)
+
+[node name="AnimatedSprite2D" parent="PlayerAttack" index="1" unique_id=1761750563]
+position = Vector2(-26, 3)
+speed_scale = 1.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1818652023]
+libraries/ = SubResource("AnimationLibrary_x3wgy")
+
 [connection signal="timeout" from="SpinningTime" to="." method="_on_spinning_time_timeout"]
 [connection signal="timeout" from="SpinningCooldown" to="." method="_on_spinning_cooldown_timeout"]
+[connection signal="timeout" from="DamageCooldown" to="." method="_on_damage_cooldown_timeout"]
+[connection signal="body_entered" from="PlayerAttack" to="." method="_on_claws_body_entered"]
+[connection signal="animation_finished" from="PlayerAttack/AnimatedSprite2D" to="." method="_on_claw_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+
+[editable path="PlayerAttack"]

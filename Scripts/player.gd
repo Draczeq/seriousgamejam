@@ -1,15 +1,23 @@
 extends CharacterBody2D
 
-@export var MAX_SPEED = 70.0
-@export var SPEED = 70.0
-@export var THROW_FORCE_MULTIPLAYER = 110.0
-@export var SPINNING_MULTIPLAYER = 0.8
+@export var CLAWS_DMG = 10.0
+@export var MAX_SPEED = 140.0
+@export var SPEED = 140.0
+@export var THROW_FORCE_MULTIPLAYER = 290.0
+@export var SPINNING_MULTIPLAYER = 1
 @export var BALL_SCENE = preload("res://Scenes/ball.tscn")
 @onready var SPINNING_TIMER = $SpinningTime
 @onready var SPINNING_COOLDOWN_TIMER = $SpinningCooldown
 @onready var BALL_POSITION = $BallPosition
 @onready var BALL_ARROW = $BallPosition/Arrow
 @onready var BALLS = $"../Balls"
+@onready var CLAWS = $PlayerAttack
+@onready var PROJECT = $"../.."
+
+var hp = 3
+var untouchable = false
+var direction
+var last_dir := Vector2(1,0)
 var spinningCooldown = 3
 var canSpin = true
 var spinningTime
@@ -22,28 +30,37 @@ var colorsInfo = [
 var currentColor = 0
 
 func _ready() -> void:
+	$PlayerAttack.scale.x = -1
 	BALL_ARROW.hide()
-	$BallPosition/BallPlaceholder.modulate = colorsInfo[currentColor]["color"]
+	$BallPosition/Arrow/BallPlaceholder.modulate = colorsInfo[currentColor]["color"]
+	$PlayerAttack.hide()
+	$PlayerAttack/CollisionPolygon2D.disabled = true
 
 func _physics_process(delta: float) -> void:
-	var direction := Input.get_vector("move_left", "move_right","move_up","move_down")
+	direction = Input.get_vector("move_left", "move_right","move_up","move_down")
+	if direction != Vector2(0,0):
+		last_dir = direction
+	if last_dir.x == -1:
+		$Sprite2D.flip_h = true
+	if last_dir.x == 1:
+		$Sprite2D.flip_h = false
 	velocity = direction * SPEED
 	move_and_slide()
 	if Input.is_action_just_released("change_ball"):
 		change_ball()
 	if canSpin:
+		if Input.is_action_just_released("spin"):
+			SPEED = MAX_SPEED
+			stop_spinning()
+			holdingTime = 0
 		if Input.is_action_pressed("spin"):
 			holdingTime+=delta
-			if holdingTime > 0.15:
-				SPEED = 0.4 *MAX_SPEED
-				spin(delta)
-		if Input.is_action_just_released("spin"):
-			if holdingTime <= 0.15:
+			SPEED = 0.4 *MAX_SPEED
+			spin(delta)
+		else:
+			if Input.is_action_just_pressed("attack") and not untouchable:
 				attack()
-			else:
-				SPEED = MAX_SPEED
-				stop_spinning()
-			holdingTime = 0
+					
 	
 func spin(delta):
 	if SPINNING_TIMER.is_stopped():
@@ -70,8 +87,41 @@ func stop_spinning():
 	SPINNING_COOLDOWN_TIMER.start(spinningCooldown)
 	throw()
 
+func change_ball():
+	currentColor += 1
+	if(currentColor > 2):
+		currentColor = 0
+	$BallPosition/Arrow/BallPlaceholder.modulate = colorsInfo[currentColor]["color"]
+	
 func attack():
-	pass
+	if last_dir.x == -1:
+		$PlayerAttack.scale.x = 1
+		$PlayerAttack.rotation_degrees = 0
+	elif last_dir.x == 1:
+		$PlayerAttack.scale.x = -1
+		$PlayerAttack.rotation_degrees = 0
+	elif last_dir.y == -1:
+		$PlayerAttack.scale.x = 1
+		$PlayerAttack.rotation_degrees = 90
+	elif last_dir.y == 1:
+		$PlayerAttack.scale.x = -1
+		$PlayerAttack.rotation_degrees = 90
+	$PlayerAttack.show()
+	$PlayerAttack/AnimatedSprite2D.play("attack")
+	$PlayerAttack/CollisionPolygon2D.disabled = false
+func dmg(damage):
+	if not untouchable:
+		untouchable = true
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(2, false)
+		set_collision_mask_value(4, false)
+		print("player dmg")
+		$DamageCooldown.start()
+		$AnimationPlayer.play("untouchable")
+		hp -= damage
+		if hp <= 0:
+			PROJECT.call_deferred("restart")
+
 
 func _on_spinning_time_timeout() -> void:
 	print("player spinned for too long")
@@ -83,10 +133,21 @@ func _on_spinning_time_timeout() -> void:
 func _on_spinning_cooldown_timeout() -> void:
 	canSpin = true
 	
-func change_ball():
-	currentColor += 1
-	if(currentColor > 2):
-		currentColor = 0
-	$BallPosition/BallPlaceholder.modulate = colorsInfo[currentColor]["color"]
-		
-	
+func _on_claw_animation_finished() -> void:
+	$PlayerAttack.hide()
+	$PlayerAttack/CollisionPolygon2D.disabled = true
+
+func _on_claws_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		body.dmg(CLAWS_DMG)
+
+func _on_damage_cooldown_timeout() -> void:
+	untouchable = false
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(2, true)
+	set_collision_mask_value(4, true)
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "untouchable":
+		if untouchable:
+			$AnimationPlayer.play("untouchable")
