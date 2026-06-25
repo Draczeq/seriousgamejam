@@ -4,10 +4,57 @@
 [ext_resource type="Texture2D" uid="uid://0776oqofrknm" path="res://Sprites/casino.png" id="1_mkdus"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d7bgo"]
-radius = 34.0
-height = 126.0
+radius = 42.0
+height = 146.0
 
-[node name="roulette" type="Area2D" unique_id=1085256479]
+[sub_resource type="Animation" id="Animation_7m0ys"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_77tpy"]
+resource_name = "levitate"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(),
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 1, 0, 10, -1, 0, 0, 0, 10, 0, 0, 1, 0, 0, -1, 0, 0, 0),
+"times": PackedFloat32Array(0.03, 2, 2.03, 4)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lb26e"]
+_data = {
+&"RESET": SubResource("Animation_7m0ys"),
+&"levitate": SubResource("Animation_77tpy")
+}
+
+[node name="roulette" type="Area2D" unique_id=1085256479 groups=["navigation_polygon_source_geometry_group"]]
 collision_layer = 2
 collision_mask = 5
 gravity_point = true
@@ -18,17 +65,21 @@ script = ExtResource("1_7m0ys")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=724964499]
 texture_filter = 1
-position = Vector2(1, 1)
+position = Vector2(0, 9.052735)
 texture = ExtResource("1_mkdus")
 
+[node name="Balls" type="Node2D" parent="Sprite2D" unique_id=2015971609]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2047263934]
-visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_d7bgo")
 
-[node name="Timer" type="Timer" parent="." unique_id=623660495]
+[node name="SlowingTimer" type="Timer" parent="." unique_id=623660495]
 wait_time = 3.0
 one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1388576700]
+wait_time = 5.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1667917948]
 collision_layer = 2
@@ -46,5 +97,18 @@ collision_mask = 5
 visible = false
 polygon = PackedVector2Array(-24, -12, -28, -10, -34, -5, -36, 1, -35, 8, -28, 15, -15, 18, -3, 18, 18, 17, 28, 13, 37, 7, 41, 2, 41, -5, 35, -10, 28, -12, 19, -15, 10, -16, 1, -16, -7, -16, -13, -15, -21, -13)
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1088141214]
+libraries/ = SubResource("AnimationLibrary_lb26e")
+autoplay = &"levitate"
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1962599458]
+
+[node name="RayCastLeft" type="RayCast2D" parent="Node2D" unique_id=559713369]
+target_position = Vector2(-400, 0)
+
+[node name="RayCastRight" type="RayCast2D" parent="Node2D" unique_id=1170852046]
+target_position = Vector2(400, 0)
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="SlowingTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

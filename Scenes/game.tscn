@@ -1,16 +1,32 @@
-[gd_scene format=3 uid="uid://dfn2vw2lesmwg"]
+[gd_scene format=4 uid="uid://b00lrbgmox6u7"]
 
 [ext_resource type="Script" uid="uid://es4ft2hnfn54" path="res://Scripts/game.gd" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://b15tgnborxqam" path="res://Scenes/player.tscn" id="1_ebmjs"]
-[ext_resource type="Texture2D" uid="uid://bjrx0ayody44x" path="res://Sprites/floor.png" id="1_wrm1d"]
+[ext_resource type="Texture2D" uid="uid://cj7h0kduq2idc" path="res://Sprites/tiles/tileblack.png" id="2_wowpa"]
+[ext_resource type="Texture2D" uid="uid://dip47veh2ndcy" path="res://Sprites/tiles/tilered.png" id="3_i6g32"]
 [ext_resource type="PackedScene" uid="uid://crpo8wab8p247" path="res://Scenes/casino.tscn" id="3_wrm1d"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1l0tm"]
+texture = ExtResource("2_wowpa")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v158k"]
+texture = ExtResource("3_i6g32")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dkq08"]
+tile_size = Vector2i(32, 32)
+sources/2 = SubResource("TileSetAtlasSource_1l0tm")
+sources/3 = SubResource("TileSetAtlasSource_v158k")
 
 [sub_resource type="Animation" id="Animation_wrm1d"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:color")
+tracks/0/path = NodePath("../ColorRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -22,7 +38,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/path = NodePath("../ColorRect:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -31,13 +47,62 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("roulette:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("roulette:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_wowpa"]
+resource_name = "roulette_slam"
+length = 8.8
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("roulette:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(320, -0.4, 0, 0.4, 0, 305, 0, 0, 0.4, 0, 320, 0, 0, 0.4, 0, 335, 0, 0, 0.4, 0, 320, 0, 0, 0, 0, 320, -4, 0, 0, 0, 320, -0.4, 0, 0, 0),
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 5.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("roulette:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 3, 3),
+"points": PackedFloat32Array(58, -0.25, 0, 0.25, 0, 63, -0.25, 0, 0.25, 0, 68, -0.25, 0, 0.25, 0, 63, -0.25, 0, 0.25, 0, 58, -0.25, 0, 0.25, 0, 58, -0.25, 0, 0.36861992, -44.5, 310, -0.33138037, 13, 0.25, 0, 300, -0.625, -0.25, 0.625, 0.25, 58, -0.20000005, 0, 0.20000005, 0),
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 5.5, 8, 8.8)
+}
 
 [sub_resource type="Animation" id="Animation_3dryh"]
 resource_name = "start_game"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:color")
+tracks/0/path = NodePath("../ColorRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -49,7 +114,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/path = NodePath("../ColorRect:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -62,30 +127,45 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wowpa"]
 _data = {
 &"RESET": SubResource("Animation_wrm1d"),
+&"roulette_slam": SubResource("Animation_wowpa"),
 &"start_game": SubResource("Animation_3dryh")
 }
 
-[node name="Game" type="Node2D" unique_id=1104795986]
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_caqq8"]
+vertices = PackedVector2Array(630, 374, 10, 374, 10, 10, 630, 10)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(0, 0, 0, 384, 640, 384, 640, 0)])
+source_geometry_mode = 2
+
+[node name="Game" type="Node2D" unique_id=1137871680]
 script = ExtResource("1_3dryh")
 
-[node name="Floor" type="Sprite2D" parent="." unique_id=1316437825]
-texture_filter = 1
-position = Vector2(160, 90)
-texture = ExtResource("1_wrm1d")
+[node name="Statics" type="Node2D" parent="." unique_id=278905806]
 
-[node name="roulette" parent="." unique_id=668480495 instance=ExtResource("3_wrm1d")]
-position = Vector2(156, 47)
+[node name="floor" type="TileMapLayer" parent="Statics" unique_id=800982059]
+modulate = Color(0.49354547, 0.49354553, 0.49354553, 1)
+tile_map_data = PackedByteArray("AAABAAAAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAAMAAwAAAAAAAAABAAIAAwAAAAAAAAACAAEAAwAAAAAAAAADAAAAAwAAAAAAAAAFAAAAAwAAAAAAAAAEAAEAAwAAAAAAAAADAAIAAwAAAAAAAAACAAMAAwAAAAAAAAABAAQAAwAAAAAAAAAAAAUAAwAAAAAAAAACAAUAAwAAAAAAAAAEAAUAAwAAAAAAAAAGAAUAAwAAAAAAAAAIAAUAAwAAAAAAAAAJAAQAAwAAAAAAAAAIAAMAAwAAAAAAAAAJAAIAAwAAAAAAAAAIAAEAAwAAAAAAAAAJAAAAAwAAAAAAAAAHAAAAAwAAAAAAAAAGAAEAAwAAAAAAAAAFAAIAAwAAAAAAAAAHAAIAAwAAAAAAAAAGAAMAAwAAAAAAAAAEAAMAAwAAAAAAAAADAAQAAwAAAAAAAAAFAAQAAwAAAAAAAAAHAAQAAwAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAgAAAAAAAAABAAEAAgAAAAAAAAACAAAAAgAAAAAAAAACAAIAAgAAAAAAAAABAAMAAgAAAAAAAAAAAAQAAgAAAAAAAAABAAUAAgAAAAAAAAACAAQAAgAAAAAAAAADAAMAAgAAAAAAAAADAAUAAgAAAAAAAAAEAAQAAgAAAAAAAAAFAAUAAgAAAAAAAAAFAAMAAgAAAAAAAAAGAAQAAgAAAAAAAAAHAAUAAgAAAAAAAAAHAAMAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAJAAMAAgAAAAAAAAAIAAIAAgAAAAAAAAAJAAEAAgAAAAAAAAAIAAAAAgAAAAAAAAAHAAEAAgAAAAAAAAAGAAAAAgAAAAAAAAAGAAIAAgAAAAAAAAAFAAEAAgAAAAAAAAAEAAAAAgAAAAAAAAAEAAIAAgAAAAAAAAADAAEAAgAAAAAAAAAAAAYAAgAAAAAAAAACAAYAAgAAAAAAAAABAAcAAgAAAAAAAAAAAAgAAgAAAAAAAAAEAAYAAgAAAAAAAAADAAcAAgAAAAAAAAACAAgAAgAAAAAAAAABAAkAAgAAAAAAAAAAAAoAAgAAAAAAAAABAAsAAgAAAAAAAAACAAoAAgAAAAAAAAADAAkAAgAAAAAAAAAEAAgAAgAAAAAAAAAFAAcAAgAAAAAAAAAGAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAHAAcAAgAAAAAAAAAGAAgAAgAAAAAAAAAFAAkAAgAAAAAAAAAEAAoAAgAAAAAAAAADAAsAAgAAAAAAAAAFAAsAAgAAAAAAAAAGAAoAAgAAAAAAAAAHAAkAAgAAAAAAAAAIAAgAAgAAAAAAAAAJAAcAAgAAAAAAAAAKAAYAAgAAAAAAAAALAAUAAgAAAAAAAAAMAAQAAgAAAAAAAAANAAMAAgAAAAAAAAAOAAIAAgAAAAAAAAAPAAEAAgAAAAAAAAAQAAAAAgAAAAAAAAAOAAAAAgAAAAAAAAANAAEAAgAAAAAAAAAMAAIAAgAAAAAAAAALAAMAAgAAAAAAAAAKAAQAAgAAAAAAAAAKAAIAAgAAAAAAAAALAAEAAgAAAAAAAAAMAAAAAgAAAAAAAAAKAAAAAgAAAAAAAAASAAAAAgAAAAAAAAATAAEAAgAAAAAAAAARAAEAAgAAAAAAAAASAAIAAgAAAAAAAAAQAAIAAgAAAAAAAAARAAMAAgAAAAAAAAAPAAMAAgAAAAAAAAAQAAQAAgAAAAAAAAAOAAQAAgAAAAAAAAAPAAUAAgAAAAAAAAANAAUAAgAAAAAAAAAOAAYAAgAAAAAAAAAMAAYAAgAAAAAAAAANAAcAAgAAAAAAAAALAAcAAgAAAAAAAAAMAAgAAgAAAAAAAAAKAAgAAgAAAAAAAAALAAkAAgAAAAAAAAAJAAkAAgAAAAAAAAAKAAoAAgAAAAAAAAAIAAoAAgAAAAAAAAAJAAsAAgAAAAAAAAAHAAsAAgAAAAAAAAALAAsAAgAAAAAAAAAMAAoAAgAAAAAAAAANAAkAAgAAAAAAAAAOAAgAAgAAAAAAAAAPAAcAAgAAAAAAAAAQAAYAAgAAAAAAAAARAAUAAgAAAAAAAAASAAQAAgAAAAAAAAATAAMAAgAAAAAAAAATAAUAAgAAAAAAAAASAAYAAgAAAAAAAAARAAcAAgAAAAAAAAAQAAgAAgAAAAAAAAAPAAkAAgAAAAAAAAAOAAoAAgAAAAAAAAANAAsAAgAAAAAAAAAPAAsAAgAAAAAAAAAQAAoAAgAAAAAAAAARAAkAAgAAAAAAAAASAAgAAgAAAAAAAAATAAcAAgAAAAAAAAATAAkAAgAAAAAAAAASAAoAAgAAAAAAAAARAAsAAgAAAAAAAAATAAsAAgAAAAAAAAATAAAAAwAAAAAAAAARAAAAAwAAAAAAAAASAAEAAwAAAAAAAAATAAIAAwAAAAAAAAAPAAAAAwAAAAAAAAAQAAEAAwAAAAAAAAARAAIAAwAAAAAAAAASAAMAAwAAAAAAAAATAAQAAwAAAAAAAAANAAAAAwAAAAAAAAAOAAEAAwAAAAAAAAAPAAIAAwAAAAAAAAAQAAMAAwAAAAAAAAARAAQAAwAAAAAAAAASAAUAAwAAAAAAAAATAAYAAwAAAAAAAAALAAAAAwAAAAAAAAAMAAEAAwAAAAAAAAANAAIAAwAAAAAAAAAOAAMAAwAAAAAAAAAPAAQAAwAAAAAAAAAQAAUAAwAAAAAAAAARAAYAAwAAAAAAAAASAAcAAwAAAAAAAAATAAgAAwAAAAAAAAAKAAEAAwAAAAAAAAALAAIAAwAAAAAAAAAMAAMAAwAAAAAAAAANAAQAAwAAAAAAAAAOAAUAAwAAAAAAAAAPAAYAAwAAAAAAAAAQAAcAAwAAAAAAAAARAAgAAwAAAAAAAAASAAkAAwAAAAAAAAATAAoAAwAAAAAAAAAKAAMAAwAAAAAAAAALAAQAAwAAAAAAAAAMAAUAAwAAAAAAAAANAAYAAwAAAAAAAAAOAAcAAwAAAAAAAAAPAAgAAwAAAAAAAAAQAAkAAwAAAAAAAAARAAoAAwAAAAAAAAASAAsAAwAAAAAAAAAKAAUAAwAAAAAAAAALAAYAAwAAAAAAAAAMAAcAAwAAAAAAAAANAAgAAwAAAAAAAAAOAAkAAwAAAAAAAAAPAAoAAwAAAAAAAAAQAAsAAwAAAAAAAAAJAAYAAwAAAAAAAAAKAAcAAwAAAAAAAAALAAgAAwAAAAAAAAAMAAkAAwAAAAAAAAANAAoAAwAAAAAAAAAOAAsAAwAAAAAAAAAHAAYAAwAAAAAAAAAIAAcAAwAAAAAAAAAJAAgAAwAAAAAAAAAKAAkAAwAAAAAAAAALAAoAAwAAAAAAAAAMAAsAAwAAAAAAAAAFAAYAAwAAAAAAAAAGAAcAAwAAAAAAAAAHAAgAAwAAAAAAAAAIAAkAAwAAAAAAAAAJAAoAAwAAAAAAAAAKAAsAAwAAAAAAAAADAAYAAwAAAAAAAAAEAAcAAwAAAAAAAAAFAAgAAwAAAAAAAAAGAAkAAwAAAAAAAAAHAAoAAwAAAAAAAAAIAAsAAwAAAAAAAAABAAYAAwAAAAAAAAACAAcAAwAAAAAAAAADAAgAAwAAAAAAAAAEAAkAAwAAAAAAAAAFAAoAAwAAAAAAAAAGAAsAAwAAAAAAAAAAAAcAAwAAAAAAAAABAAgAAwAAAAAAAAACAAkAAwAAAAAAAAADAAoAAwAAAAAAAAAEAAsAAwAAAAAAAAAAAAkAAwAAAAAAAAABAAoAAwAAAAAAAAACAAsAAwAAAAAAAAAAAAsAAwAAAAAAAAA=")
+tile_set = SubResource("TileSet_dkq08")
 
-[node name="Balls" type="Node2D" parent="." unique_id=1263857715]
+[node name="walls" type="TileMapLayer" parent="Statics" unique_id=1999935776]
+
+[node name="Balls" type="Node2D" parent="." unique_id=2034807553]
+
+[node name="Enemy" type="Node2D" parent="." unique_id=238457939]
+
+[node name="roulette" parent="." unique_id=1085256479 instance=ExtResource("3_wrm1d")]
 
 [node name="CharacterBody2D" parent="." unique_id=475872707 instance=ExtResource("1_ebmjs")]
 position = Vector2(150, 157)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1335321988]
-offset_right = 320.0
-offset_bottom = 180.0
-color = Color(0, 0, 0, 0)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1982884308]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=312893745]
 libraries/ = SubResource("AnimationLibrary_wowpa")
 autoplay = &"start_game"
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1514292517]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_caqq8")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=364795303]
+energy = 0.15
+blend_mode = 1

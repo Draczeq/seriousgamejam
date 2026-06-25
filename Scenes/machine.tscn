@@ -1,0 +1,184 @@
+[gd_scene format=3 uid="uid://c12pu1ebdelt2"]
+
+[ext_resource type="Script" uid="uid://v2uaceilokrs" path="res://Scripts/machine.gd" id="1_xuuum"]
+[ext_resource type="Texture2D" uid="uid://dip47veh2ndcy" path="res://Sprites/tiles/tilered.png" id="2_h612m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caqq8"]
+size = Vector2(70, 100)
+
+[sub_resource type="Gradient" id="Gradient_caqq8"]
+offsets = PackedFloat32Array(0.12698413, 0.76719576)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dkq08"]
+gradient = SubResource("Gradient_caqq8")
+height = 48
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Animation" id="Animation_h612m"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_mg6tx"]
+resource_name = "machine_falling"
+length = 2.0
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(),
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-400, -0.25, 0, 0.2, 0.5, -65, 0, -148.5, 2, -1.5),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.125, 2.125), Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_asjpf"]
+_data = {
+&"RESET": SubResource("Animation_h612m"),
+&"machine_falling": SubResource("Animation_mg6tx")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d7bgo"]
+size = Vector2(42, 106)
+
+[node name="Machine" type="Area2D" unique_id=1404543094]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_xuuum")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=51382334]
+position = Vector2(0, -46)
+shape = SubResource("RectangleShape2D_caqq8")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=841922262]
+energy = 0.3
+blend_mode = 1
+texture = SubResource("GradientTexture2D_dkq08")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=431292497]
+position = Vector2(0, -400)
+scale = Vector2(1.5, 4)
+texture = ExtResource("2_h612m")
+
+[node name="FallTimer" type="Timer" parent="." unique_id=1008762795]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1663059609]
+wait_time = 2.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1330436635]
+libraries/ = SubResource("AnimationLibrary_asjpf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1288896245]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1587503264]
+position = Vector2(0, -54)
+shape = SubResource("RectangleShape2D_d7bgo")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="FallTimer" to="." method="_on_fall_timer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
